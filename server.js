@@ -32,8 +32,13 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+// // Connect to the Mongo DB
+// mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrapeHomework";
+
+mongoose.connect(MONGODB_URI);
 
 
 // on click first button
@@ -54,7 +59,7 @@ app.get("/scrape", function(req, res) {
       $("article h2").each(function(i, element) {
         // Save an empty result object
         var result = {};
-  
+        
         // Add the text and href of every link, and save them as properties of the result object
         result.title = $(this)
           .children("a")
@@ -62,7 +67,9 @@ app.get("/scrape", function(req, res) {
         result.link = $(this)
           .children("a")
           .attr("href");
-          console.log(result);
+          
+
+      
           
   
 
@@ -122,12 +129,13 @@ app.get("/scrape", function(req, res) {
   });
   
   
-  // $(".save-article").on('click', function(){
+ 
 
-  //   var articleId = $(this).data('id')
+  
   
   // Route for grabbing a specific Article by id, populate it with it's note
   app.get("/articles/:id", function(req, res) {
+    var articleId = $(this).data('id');
     // TODO
     // ====
     // Finish the route so it finds one article using the req.params.id,
@@ -144,11 +152,23 @@ app.get("/scrape", function(req, res) {
     // and run the populate method with "note",
     // then responds with the article with the note included
   });
+
+  app.put("/article/:id", function(req, res){
+    console.log(req.body)
+    db.Article.findOneAndUpdate({_id : req.params.id} , { saved: req.body.saved })
+    .then(function(data){
+    res.json(data)
+  })
+  .catch(function(err){
+    console.log(err)
+  })
+})
   
   // Route for saving/updating an Article's associated Note
-  app.post("/articles/:id", function(req, res) {
+  app.post("/article/:id", function(req, res) {
     // TODO
     // ====
+    var articleId = $(this).data('id');
   
     db.Note.create(req.body)
     .then(function(dbNote) {

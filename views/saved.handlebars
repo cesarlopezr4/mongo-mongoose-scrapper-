@@ -1,15 +1,15 @@
 
 <ul>
   {{#each articles}}
- 
+    {{#if saved}}
      <li>
 
        <a href="{{link}}"><h2>{{title}}</h2></a>
 
-       <button  data-id="{{_id}}" class="articles/:_id">Update Article!</button>
-	   <button  data-id="{{_id}}" class="/article/:_id">Make a Note!</button>
+       <button  data-id="{{_id}}" class="unSaveArticleBtn">Unsave Article</button>
+	   <button  data-id="{{_id}}" class="makeANote">Make a Note!</button>
 
      </li>
-  
+    {{/if}}
   {{/each}}
 </ul>
