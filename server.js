@@ -33,14 +33,15 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // // Connect to the Mongo DB
-// mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scrapeHomework";
+// var MONGODB_URI = process.env.MONGODB_URI 
+// mongodb://<dbuser>:<dbpassword>@ds015584.mlab.com:15584/heroku_njrv98ff;
 
-mongoose.connect(MONGODB_URI);
+// mongoose.connect(MONGODB_URI);
 
-
+// mongodb://<dbuser>:<dbpassword>@ds015584.mlab.com:15584/heroku_njrv98ff
 // on click first button
      
 // Routes
